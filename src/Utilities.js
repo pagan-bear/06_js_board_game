@@ -82,11 +82,11 @@ export function UpdateGameTable() {
   $('#player1-maxdamage').text(Configuration.player1.weapon.maxDamage);
   $('#player1-life').text(Configuration.player1.life);
 
-  $('#player2-name').text(Configuration.player2.name);
-  $('#player2-steps').text(Configuration.player2.steps);
-  $('#player2-weapon').text(Configuration.player2.weapon.shortName);
-  $('#player2-maxdamage').text(Configuration.player2.weapon.maxDamage);
-  $('#player2-life').text(Configuration.player2.life);
+  // $('#player2-name').text(Configuration.player2.name);
+  // $('#player2-steps').text(Configuration.player2.steps);
+  // $('#player2-weapon').text(Configuration.player2.weapon.shortName);
+  // $('#player2-maxdamage').text(Configuration.player2.weapon.maxDamage);
+  // $('#player2-life').text(Configuration.player2.life);
 
   // console.log('--- Ending Utilities.UpdateGameTable()');
 }

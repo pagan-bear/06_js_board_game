@@ -1,6 +1,6 @@
 /* jshint esversion: 6 */
 /* jshint expr: true */
-/* elsint no-console: off */
+/* eslint-disable no-console */
 
 import Configuration from './Configuration';
 import * as Tokens from './Tokens';
@@ -11,6 +11,7 @@ export function Initialise() {
   // console.log('+++ Starting Initialise.Initialise()');
   // Define HTML canvas and contenxt
   InitialiseCanvas();
+
   // Define board to be used throughout game
   Configuration.gameboard = InitialiseGameboard();
 
@@ -18,15 +19,16 @@ export function Initialise() {
   Configuration.player1 = InitialisePlayer1();
 
   // Define and locate on gameboard player 2
-  Configuration.player2 = InitialisePlayer2();
-
-  Utilities.UpdateGameTable();
+  // Configuration.player2 = InitialisePlayer2();
 
   // Define and locate on gameboard weapon chests
-  Configuration.chestArray = InitialiseChests();
+  // Configuration.chestArray = InitialiseChests();
+  InitialiseChests();
 
   // Define and locate on gameboard walls
   // InitialiseWalls();
+
+  Utilities.UpdateGameTable();
 
   // console.log('--- Ending Initialise.Initialise()');
 }
@@ -82,36 +84,24 @@ function InitialisePlayer2() {
   return player2;
 }
 
-function PlaceTokenOnGameboard(token, active) {
-  // console.log('+++ Starting Initialise.PlaceTokenOnGameboard()');
-  let [px, py] = token.tokenTile;
-  Configuration.gameboard[py][px] = token;
-  token.active = active;
-  token.fillToken();
-
-  // console.log('--- Ending Initialise.PlaceTokenOnGameboard()');
-}
-
 function InitialiseChests() {
-  // console.log('Starting Initialise.IntialiseChests()');
-  let chestArray = [];
+  console.log('Starting Initialise.IntialiseChests()');
   let numChests = Utilities.RandomNumber(Configuration.minChests, Configuration.maxChests);
 
   for (let i = 0; i < numChests; i++) {
     let chest = new Tokens.Chest(4, 'chest');
     let [cx, cy] = chest.tokenTile;
+    console.log(`chest.tokenTile: ${chest.tokenTile}`);
     // Something in the chosen location?
     while (Configuration.gameboard[cy][cx] != null) {
       [cx, cy] = [
         Utilities.RandomNumber(Configuration.minX, Configuration.maxX),
         Utilities.RandomNumber(Configuration.minY, Configuration.maxY)];
-      chest.tokenTile = [cx, cy];
+      chest.fillToken([cx, cy]);
     }
-    chest.fillToken();
     Configuration.gameboard[cy][cx] = chest;
-    chestArray.push(chest);
   }
-  return chestArray;
+  console.log('--- Ending Initialise.InitialiseChests()');
 }
 
 function InitialiseWalls() {
@@ -132,4 +122,14 @@ function InitialiseWalls() {
     Configuration.gameboard[wy][wx] = wall;
     // wallArray.push(wall);
   }
+}
+
+function PlaceTokenOnGameboard(token, active) {
+  // console.log('+++ Starting Initialise.PlaceTokenOnGameboard()');
+  let [px, py] = token.tokenTile;
+  Configuration.gameboard[py][px] = token;
+  token.active = active;
+  token.fillToken(token.tokenTile);
+
+  // console.log('--- Ending Initialise.PlaceTokenOnGameboard()');
 }

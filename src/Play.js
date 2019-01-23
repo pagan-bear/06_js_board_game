@@ -1,6 +1,6 @@
+/* eslint-disable no-console */
 /* jshint esversion: 6 */
 /* jshint expr: true */
-/* elsint no-console: off */
 
 import Configuration from './Configuration';
 import LootChest from './LootChest';
@@ -16,19 +16,13 @@ export default function Play(event) {
 
   // Set player and opponent variables
   let player = Configuration.player1.active ? Configuration.player1 : Configuration.player2;
-  console.log('player:');
-  console.log(player);
   let opponent = (player === Configuration.player1) ? Configuration.player2 : Configuration.player1;
-  console.log('opponent:');
-  console.log(opponent);
 
   // Assign the movement differentials and set up tile locations
   let dx = validKey.dx, dy = validKey.dy;
   let [x1, y1] = player.fromTile;
   player.toTile = [x1 + dx, y1 + dy];
   let [x2, y2] = player.toTile;
-  console.log(player.fromTile);
-  console.log(player.toTile);
 
   // Save latest variables to global player object
   Configuration.player = player;

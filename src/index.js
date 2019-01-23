@@ -3,7 +3,6 @@
 /* elsint no-console: off */
 
 import { Initialise } from './Initialise';
-// import GamePlay from './GamePlay';
 import Play from './Play';
 import * as Utilities from './Utilities';
 

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "OpenClassrooms JavaScript Board Game",
   "main": "index.js",
-  "respository": "https://github.com/pagan-bear/06_js_game.git"
+  "respository": "https://github.com/pagan-bear/06_js_game.git",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack -w --mode development"

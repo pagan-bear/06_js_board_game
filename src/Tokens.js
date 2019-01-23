@@ -39,8 +39,8 @@ export default class Token {
     return [x, y];
   }
 
-  clearToken(fromTile) {
-    let [x, y] = fromTile;
+  clearToken() {
+    let [x, y] = this.fromTile;
 
     Configuration.context.clearRect(
       x * this.width,
@@ -50,9 +50,20 @@ export default class Token {
     );
   }
 
-  fillToken(toTile) {
-    // console.log(`+++ Starting Tokens.Token.fillToken(${this.type})`);
+  fillToken() {
     let [x, y] = this.toTile;
+    
+    Configuration.context.fillStyle = this.color;
+    Configuration.context.fillRect(
+      x * this.width,
+      y * this.height,
+      this.width,
+      this.height
+    );
+  }
+
+  initialiseToken() {
+    let [x, y] = this.tokenTile;
 
     Configuration.context.fillStyle = this.color;
     Configuration.context.fillRect(
@@ -61,7 +72,6 @@ export default class Token {
       this.width,
       this.height
     );
-    // console.log(`--- Ending Tokens.Token.fillToken(${this.type})`);
   }
 }
 

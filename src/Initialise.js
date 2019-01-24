@@ -6,33 +6,24 @@ import Configuration from './Configuration';
 import * as Tokens from './Tokens';
 import * as Utilities from './Utilities';
 
-// Initialise game canvas
+// Initialise game: canvas, gameboard, player1, player2, chests, walls
 export function Initialise() {
-  // console.log('+++ Starting Initialise.Initialise()');
   // Define HTML canvas and contenxt
-  console.log('>+++ Starting Initialise.InitialiseCanvas()');
   InitialiseCanvas();
-  console.log('>+++ Ending Initialise.InitialiseCanvas()');
 
   // Define board to be used throughout game
-  console.log('>+++ Starting Initialise.IntialiseGameboard()');
   Configuration.gameboard = InitialiseGameboard();
-  console.log('>+++ Ending Initialise.IntialiseGameboard()');
 
   // Define and locate on gameboard player 1
-  console.log('>+++ Starting Initialise.InitialisePlayer1()');
   Configuration.player1 = InitialisePlayer1();
-  console.log('>+++ Ending Initialise.InitialisePlayer1()');
 
   // Define and locate on gameboard player 2
-  console.log('>+++ Starting Initialise.InitialisePlayer2()');
-  // Configuration.player2 = InitialisePlayer2();
-  console.log('>+++ Ending Initialise.InitialisePlayer2()');
+  Configuration.player2 = InitialisePlayer2();
 
   // Define and locate on gameboard weapon chests
-  console.log('>+++ Starting Initialise.InitialiseChests()');
-  Configuration.chestArray = InitialiseChests();
-  console.log('>+++ Ending Initialise.InitialiseChests()');
+  // console.log('>+++ Starting Initialise.InitialiseChests()');
+  // Configuration.chestArray = InitialiseChests();
+  // console.log('>+++ Ending Initialise.InitialiseChests()');
 
   // Define and locate on gameboard walls
   // InitialiseWalls();
@@ -66,27 +57,26 @@ function InitialisePlayer1() {
   return player1;
 }
 
-// function InitialisePlayer2() {
-//   // console.log('+++ Starting Initialise.InitialisePlayer2()');
-//   let player2 = new Tokens.Player(2, 'Jerry');
-//   let [x1, y1] = Configuration.player1.tokenTile;
-//   let [x2, y2] = player2.tokenTile;
+function InitialisePlayer2() {
+  // console.log('+++ Starting Initialise.InitialisePlayer2()');
+  let player2 = new Tokens.Player(2, 'Jerry');
+  let [x1, y1] = [...Configuration.player1.fromTile];
+  let [x2, y2] = [...player2.toTile];
 
-//   // player1 and player2 have collided so generate new player2 coords
-//   while (Utilities.TokenCollision(x1, y1, x2, y2)) {
-//     player2.tokenTile = Utilities.SetCoords();
-//     [x2, y2] = player2.tokeTile;
-//     player2.fromTile = player2.tokenTile;
-//     player2.toTile = player2.tokenTile;
-//     player2.clearToken();
-//     player2.fillToken();
-//   }
+  // Check if player1 and player2 have collided. If so generate new player2 coords
+  while (Utilities.TokenCollision(x1, y1, x2, y2)) {
+    // Player 1 and 2 have collided - set new player 2 coordinates
+    player2.fromTile = Utilities.SetCoords();
+    player2.toTile = player2.fromTile;
+  }
 
-//   PlaceTokenOnGameboard(player2, false);
-
-//   // console.log('--- Ending Initialise.InitialisePlayer2()');
-//   return player2;
-// }
+  // Draw player2 on canvas
+  player2.fillToken();
+  // Place player2 on gameboard
+  PlaceTokenOnGameboard(player2, false);
+  // console.log('--- Ending Initialise.InitialisePlayer2()');
+  return player2;
+}
 
 function InitialiseChests() {
   let numChests = Utilities.RandomNumber(Configuration.minChests, Configuration.maxChests);

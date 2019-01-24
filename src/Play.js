@@ -35,11 +35,12 @@ export default function Play(event) {
 
   switch (toTileObject) {
     case 'wall': {
+      console.log('*** Starting switch (wall)');
       alert(`${Configuration.foundWall} ${Configuration.player.name}...`);
       break;
     }
     case 'chest': {
-      console.log('*** Starting switch Movement.Movement.toTileType = chest');
+      console.log('*** Starting switch (chest)');
       LootChest(x2, y2);
 
       Configuration.gameboard[y1][x1] = null;
@@ -49,18 +50,25 @@ export default function Play(event) {
       break;
     }
     case 'player': {
-      console.log('*** Starting switch Movement.Movement.toTileType = player');
+      console.log('*** Starting switch (player)');
       // PlayerBattle(player, opponent);
       break;
     }
     default: {
-      console.log('*** Starting switch Movement.Movement.toTileType (default)');
+      console.log('*** Starting switch (default)');
       // Move player to target
       player.clearToken();
       player.fillToken();
 
       // Remove player from original position on gameboard
       Configuration.gameboard[y1][x1] = null;
+      Configuration.gameboard[y2][x2] = player;
+
+      // Save latest state back to global player
+      player.fromTile = [x2, y2];
+      Configuration.player = player;
+      // Increment player steps
+      player.steps++;
 
       // Check to see if we have to restore a chest
       // if (Configuration.restoreChest) {
@@ -69,18 +77,10 @@ export default function Play(event) {
       //   Configuration.restoreChest = false;
       // }
 
-      // Add player to new position on gameboard
-      Configuration.gameboard[y2][x2] = player;
-      player.fromTile = [x2, y2];
-
-      // if (CheckForOpponent(player, opponent)) { PlayerBattle(player, opponent); }
-      player.steps++;
-
-      // Save latest state back to global player
-      Configuration.player = player;
     }
   }
 
+  // if (CheckForOpponent(player, opponent)) { PlayerBattle(player, opponent); }
   // if (player.steps >= 3) { Utilities.EndTurn(); }
   Utilities.UpdateGameTable();
   // console.log('Final Play.Play().player');

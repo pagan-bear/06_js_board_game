@@ -13,7 +13,8 @@ export default class Token {
     this.id = id;
     this.type = type;
     this.color = this.assignColor();
-    this.tokenTile = this.initialCoordinates();
+    this.fromTile = this.initialCoordinates();
+    this.toTile = this.fromTile;
     this.width = Configuration.dx;
     this.height = Configuration.dy;
     this.active = false;
@@ -52,7 +53,7 @@ export default class Token {
 
   fillToken() {
     let [x, y] = this.toTile;
-    
+
     Configuration.context.fillStyle = this.color;
     Configuration.context.fillRect(
       x * this.width,
@@ -81,11 +82,16 @@ export class Player extends Token {
     super(id);
     this.name = name;
     this.type = 'player';
-    this.fromTile = this.tokenTile;
-    this.toTile = this.tokenTile;
+    // this.fromTile = this.tokenTile;
+    // this.toTile = this.tokenTile;
     this.weapon = Configuration.weapons[0];
     this.life = 100;
     this.steps = 0;
+  }
+
+  moveToken() {
+    this.clearToken();
+    this.fillToken();
   }
 }
 

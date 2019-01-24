@@ -3,7 +3,7 @@
 /* jshint expr: true */
 
 import Configuration from './Configuration';
-import LootChest from './LootChest';
+// import LootChest from './LootChest';
 import * as Utilities from './Utilities';
 
 export default function Play(event) {
@@ -20,15 +20,14 @@ export default function Play(event) {
 
   // Assign the movement differentials and set up tile locations
   let dx = validKey.dx, dy = validKey.dy;
-  let [x1, y1] = player.fromTile;
+  let [x1, y1] = Configuration.player.fromTile;
   console.log(`Play.Play.player.fromTile: ${player.fromTile}`);
-  player.toTile = [x1 + dx, y1 + dy];
+  Configuration.player.toTile = [x1 + dx, y1 + dy];
   console.log(`Play.Play.player.toTile: ${player.toTile}`);
-  let [x2, y2] = player.toTile;
-  console.log(`Play.Play [x2, y2]: ${x2}, ${y2}`);
+  let [x2, y2] = Configuration.player.toTile;
 
   // Save latest variables to global player object
-  Configuration.player = player;
+  // Configuration.player = player;
 
   // Check what object - if anything - is located at the target location
   let toTileObject = (Configuration.gameboard[y2][x2] instanceof Object) ? Configuration.gameboard[y2][x2].type : null;
@@ -36,17 +35,17 @@ export default function Play(event) {
   switch (toTileObject) {
     case 'wall': {
       console.log('*** Starting switch (wall)');
-      alert(`${Configuration.foundWall} ${Configuration.player.name}...`);
+      // alert(`${Configuration.foundWall} ${Configuration.player.name}...`);
       break;
     }
     case 'chest': {
       console.log('*** Starting switch (chest)');
-      LootChest(x2, y2);
+      // LootChest(x2, y2);
 
-      Configuration.gameboard[y1][x1] = null;
-      Configuration.gameboard[y2][x2] = player;
+      // Configuration.gameboard[y1][x1] = null;
+      // Configuration.gameboard[y2][x2] = player;
 
-      player.steps++;
+      // player.steps++;
       break;
     }
     case 'player': {
@@ -57,18 +56,34 @@ export default function Play(event) {
     default: {
       console.log('*** Starting switch (default)');
       // Move player to target
-      player.clearToken();
-      player.fillToken();
+      // player.clearToken();
+      // player.fillToken();
 
       // Remove player from original position on gameboard
+      // Configuration.gameboard[y1][x1] = null;
+      // Configuration.gameboard[y2][x2] = player;
+
+      console.log(`switch (default): x1: ${x1}, y1: ${y1}, x2: ${x2}, y2: ${y2}`);
+      console.log([...Configuration.player.fromTile]);
+      console.log([...Configuration.player.toTile]);
+
+      console.log(Configuration.gameboard[y1][x1]);
+      console.log(Configuration.gameboard[y2][x2]);
+
+      // Update gameboard
       Configuration.gameboard[y1][x1] = null;
-      Configuration.gameboard[y2][x2] = player;
+      Configuration.gameboard[y2][x2] = Configuration.player;
+
+      // Redraw player
+      Configuration.player.clearTile();
+      Configuration.player.fillTile();
+
 
       // Save latest state back to global player
-      player.fromTile = [x2, y2];
-      Configuration.player = player;
+      // player.fromTile = [x2, y2];
+      // Configuration.player = player;
       // Increment player steps
-      player.steps++;
+      // player.steps++;
 
       // Check to see if we have to restore a chest
       // if (Configuration.restoreChest) {
@@ -83,6 +98,7 @@ export default function Play(event) {
   // if (CheckForOpponent(player, opponent)) { PlayerBattle(player, opponent); }
   // if (player.steps >= 3) { Utilities.EndTurn(); }
   Utilities.UpdateGameTable();
+  console.table(Configuration.gameboard);
   // console.log('Final Play.Play().player');
   // console.log(player);
   // console.table(Configuration.gameboard);

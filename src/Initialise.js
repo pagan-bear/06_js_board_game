@@ -78,23 +78,23 @@ function InitialisePlayer2() {
   return player2;
 }
 
-function InitialiseChests() {
-  let numChests = Utilities.RandomNumber(Configuration.minChests, Configuration.maxChests);
+// function InitialiseChests() {
+//   let numChests = Utilities.RandomNumber(Configuration.minChests, Configuration.maxChests);
 
-  for (let i = 0; i < numChests; i++) {
-    let chest = new Tokens.Chest(4, 'chest');
-    let [cx, cy] = chest.toTile;
-    // Something in the chosen location?
-    while (Configuration.gameboard[cy][cx] != null) {
-      [cx, cy] = [
-        Utilities.RandomNumber(Configuration.minX, Configuration.maxX),
-        Utilities.RandomNumber(Configuration.minY, Configuration.maxY)];
-      chest.toTile = [cx, cy];
-    }
-    chest.fillToken();
-    Configuration.gameboard[cy][cx] = chest;
-  }
-}
+//   for (let i = 0; i < numChests; i++) {
+//     let chest = new Tokens.Chest(4, 'chest');
+//     let [cx, cy] = chest.toTile;
+//     // Something in the chosen location?
+//     while (Configuration.gameboard[cy][cx] != null) {
+//       [cx, cy] = [
+//         Utilities.RandomNumber(Configuration.minX, Configuration.maxX),
+//         Utilities.RandomNumber(Configuration.minY, Configuration.maxY)];
+//       chest.toTile = [cx, cy];
+//     }
+//     chest.fillToken();
+//     Configuration.gameboard[cy][cx] = chest;
+//   }
+// }
 
 // function InitialiseWalls() {
 //   // console.log('Starting Initialise.InitialiseWalls()');

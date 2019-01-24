@@ -21,7 +21,8 @@ export default function LootChest(x2, y2) {
   Configuration.restoreChest = true;
 
   // Move player to chest tile
-  Configuration.player.moveToken();
+  Configuration.player.clearToken();
+  Configuration.player.fillToken();
   Configuration.player.currentTile = [x2, y2];
   Configuration.gameboard[y2][x2] = null;
 

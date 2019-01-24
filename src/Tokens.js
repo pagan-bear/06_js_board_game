@@ -1,6 +1,6 @@
 /* jshint esversion: 6 */
 /* jshint expr: true */
-/* elsint no-console: off */
+/* eslint-disable no-console */
 
 import Configuration from './Configuration';
 import * as Utilities from './Utilities';
@@ -40,8 +40,21 @@ export default class Token {
     return [x, y];
   }
 
+  initialiseToken() {
+    let [x, y] = this.tokenTile;
+
+    Configuration.context.fillStyle = this.color;
+    Configuration.context.fillRect(
+      x * this.width,
+      y * this.height,
+      this.width,
+      this.height
+    );
+  }
+
   clearToken() {
     let [x, y] = this.fromTile;
+    console.log(`Tokens.clearToken(x, y): (${x}, ${y})`);
 
     Configuration.context.clearRect(
       x * this.width,
@@ -53,18 +66,7 @@ export default class Token {
 
   fillToken() {
     let [x, y] = this.toTile;
-
-    Configuration.context.fillStyle = this.color;
-    Configuration.context.fillRect(
-      x * this.width,
-      y * this.height,
-      this.width,
-      this.height
-    );
-  }
-
-  initialiseToken() {
-    let [x, y] = this.tokenTile;
+    console.log(`Tokens.fillToken(x, y): (${x}, ${y})`);
 
     Configuration.context.fillStyle = this.color;
     Configuration.context.fillRect(
@@ -82,16 +84,9 @@ export class Player extends Token {
     super(id);
     this.name = name;
     this.type = 'player';
-    // this.fromTile = this.tokenTile;
-    // this.toTile = this.tokenTile;
     this.weapon = Configuration.weapons[0];
     this.life = 100;
     this.steps = 0;
-  }
-
-  moveToken() {
-    this.clearToken();
-    this.fillToken();
   }
 }
 

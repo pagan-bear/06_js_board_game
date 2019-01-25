@@ -1,5 +1,3 @@
-/* jshint esversion: 6 */
-/* jshint expr: true */
 /* eslint-disable no-console */
 
 import Configuration from './Configuration';
@@ -13,8 +11,9 @@ export default class Token {
     this.id = id;
     this.type = type;
     this.color = this.assignColor();
-    this.fromTile = this.initialCoordinates();
-    this.toTile = this.fromTile;
+    this.currentTile = Utilities.SetCoords();
+    this.fromTile = this.currentTile;
+    this.toTile = this.currentTile;
     this.width = Configuration.dx;
     this.height = Configuration.dy;
     this.active = false;
@@ -32,28 +31,8 @@ export default class Token {
     }
   }
 
-  initialCoordinates() {
-    // console.log('Starting Tokens.Token.initialCoordinates()');
-    let x = Utilities.RandomNumber(Configuration.minX, Configuration.maxX);
-    let y = Utilities.RandomNumber(Configuration.minY, Configuration.maxY);
-
-    return [x, y];
-  }
-
-  initialiseToken() {
-    let [x, y] = this.tokenTile;
-
-    Configuration.context.fillStyle = this.color;
-    Configuration.context.fillRect(
-      x * this.width,
-      y * this.height,
-      this.width,
-      this.height
-    );
-  }
-
   clearToken() {
-    let [x, y] = this.fromTile;
+    let [x, y] = this.currentTile;
     console.log(`Tokens.clearToken(x, y): (${x}, ${y})`);
 
     Configuration.context.clearRect(
@@ -66,7 +45,7 @@ export default class Token {
 
   fillToken() {
     let [x, y] = this.toTile;
-    console.log(`Tokens.fillToken(x, y): (${x}, ${y})`);
+    // console.log(`Tokens.fillToken(x, y): (${x}, ${y})`);
 
     Configuration.context.fillStyle = this.color;
     Configuration.context.fillRect(

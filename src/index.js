@@ -1,5 +1,4 @@
 /* eslint-disable no-console */
-/* jshint esversion: 6*/
 /* global $ */
 
 import { Initialise } from './Initialise';

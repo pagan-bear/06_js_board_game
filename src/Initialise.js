@@ -1,5 +1,3 @@
-/* jshint esversion: 6 */
-/* jshint expr: true */
 /* eslint-disable no-console */
 
 import Configuration from './Configuration';
@@ -53,28 +51,28 @@ function InitialiseGameboard() {
 
 function InitialisePlayer1() {
   let player1 = new Tokens.Player(1, 'Sally');
-  PlaceTokenOnGameboard(player1, true);
+  // Draw player1 on canvas and set active
+  player1.fillToken();
+  player1.active = true;
+
   return player1;
 }
 
 function InitialisePlayer2() {
-  // console.log('+++ Starting Initialise.InitialisePlayer2()');
   let player2 = new Tokens.Player(2, 'Jerry');
-  let [x1, y1] = [...Configuration.player1.fromTile];
+  let [x1, y1] = [...Configuration.player1.currentTile];
   let [x2, y2] = [...player2.toTile];
 
   // Check if player1 and player2 have collided. If so generate new player2 coords
   while (Utilities.TokenCollision(x1, y1, x2, y2)) {
     // Player 1 and 2 have collided - set new player 2 coordinates
-    player2.fromTile = Utilities.SetCoords();
-    player2.toTile = player2.fromTile;
+    player2.currentTile = Utilities.SetCoords();
+    player2.toTile = player2.currentTile;
   }
-
-  // Draw player2 on canvas
+  // Draw player2 on canvas and set inactive
   player2.fillToken();
-  // Place player2 on gameboard
-  PlaceTokenOnGameboard(player2, false);
-  // console.log('--- Ending Initialise.InitialisePlayer2()');
+  player2.active = false;
+
   return player2;
 }
 
@@ -115,13 +113,3 @@ function InitialisePlayer2() {
 //     // wallArray.push(wall);
 //   }
 // }
-
-function PlaceTokenOnGameboard(token, active) {
-  // console.log('+++ Starting Initialise.PlaceTokenOnGameboard()');
-  let [px, py] = token.toTile;
-  Configuration.gameboard[py][px] = token;
-  token.active = active;
-  token.fillToken(token.tokenTile);
-
-  // console.log('--- Ending Initialise.PlaceTokenOnGameboard()');
-}

@@ -32,8 +32,7 @@ export default class Token {
   }
 
   clearToken() {
-    let [x, y] = this.currentTile;
-    console.log(`Tokens.clearToken(x, y): (${x}, ${y})`);
+    let [x, y] = this.fromTile;
 
     Configuration.context.clearRect(
       x * this.width,
@@ -45,7 +44,6 @@ export default class Token {
 
   fillToken() {
     let [x, y] = this.toTile;
-    // console.log(`Tokens.fillToken(x, y): (${x}, ${y})`);
 
     Configuration.context.fillStyle = this.color;
     Configuration.context.fillRect(

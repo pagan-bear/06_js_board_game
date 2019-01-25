@@ -19,20 +19,16 @@ export function Initialise() {
   Configuration.player2 = InitialisePlayer2();
 
   // Define and locate on gameboard weapon chests
-  // console.log('>+++ Starting Initialise.InitialiseChests()');
   InitialiseChests();
-  console.table(Configuration.chestArray);
-  // console.log('>+++ Ending Initialise.InitialiseChests()');
+  // console.table(Configuration.chestArray);
 
   // Define and locate on gameboard walls
   InitialiseWalls();
-  console.table(Configuration.wallArray);
+  // console.table(Configuration.wallArray);
 
   Utilities.UpdateGameTable();
+  // console.table(Configuration.gameboard);
 
-  console.table(Configuration.gameboard);
-
-  // console.log('--- Ending Initialise.Initialise()');
 }
 
 function InitialiseCanvas() {
@@ -104,7 +100,6 @@ function InitialiseChests() {
 }
 
 function InitialiseWalls() {
-  console.log('Starting Initialise.InitialiseWalls()'); 
   let numWalls = Utilities.RandomNumber(Configuration.minWalls, Configuration.maxWalls);
 
   for (let i = 0; i < numWalls; i++) {

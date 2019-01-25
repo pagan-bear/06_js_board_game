@@ -81,4 +81,5 @@ export default {
   restoreChest: false,
   chest: null,
   chestArray: [],
+  wallArray: [],
 };

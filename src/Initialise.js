@@ -27,7 +27,6 @@ export function Initialise() {
   // console.table(Configuration.wallArray);
 
   Utilities.UpdateGameTable();
-  console.table(Configuration.gameboard);
   // console.table(Configuration.gameboard);
 
 }

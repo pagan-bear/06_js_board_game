@@ -35,9 +35,6 @@ export default function Play(event) {
       console.log('*** Starting switch (chest)');
       // LootChest(x2, y2);
 
-      // Configuration.gameboard[y1][x1] = null;
-      // Configuration.gameboard[y2][x2] = player;
-
       // player.steps++;
       break;
     }
@@ -48,20 +45,23 @@ export default function Play(event) {
     }
     default: {
       console.log('*** Starting switch (default)');
-      // Move player from fromTile to toTile
+      // Clear player from current gameboard position
       player.clearToken();
+
+      // Move player from fromTile to toTile
       player.fillToken();
 
-      // Update player.fromTile and player.toTile
+      // Update player location on gameboard
+      let [x1, y1] = player.fromTile;
+      let [x2, y2] = player.toTile;
+      Configuration.gameboard[y1][x1] = null;
+      Configuration.gameboard[y2][x2] = player;
+
+      // Update player.fromTile and player.toTile - ready for next move
       player.fromTile = player.toTile;
 
-      // Update player on gameboard
-
-      // Move player to new tile
-
-      // Save latest global state back to player
-
       // Increment player steps
+      player.steps++;
 
       // Check to see if we have to restore a chest
       console.log('*** Ending switch (default)');
@@ -71,9 +71,6 @@ export default function Play(event) {
   // if (CheckForOpponent(player, opponent)) { PlayerBattle(player, opponent); }
   // if (player.steps >= 3) { Utilities.EndTurn(); }
   Utilities.UpdateGameTable();
-  // console.table(Configuration.gameboard);
-  // console.log('Final Play.Play().player');
-  // console.log(player);
-  // console.table(Configuration.gameboard);
+  console.table(Configuration.gameboard);
   // console.log('--- Ending Play.Play()');
 }

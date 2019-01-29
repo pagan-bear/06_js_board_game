@@ -1,6 +1,5 @@
-/* jshint esversion: 6 */
-/* jshint expr: true */
-/* elsint no-console: off */
+/* eslint-disable no-console */
+/* global $ */
 
 import Configuration from './Configuration';
 import * as Utilities from './Utilities';

@@ -3,7 +3,7 @@
 import Configuration from './Configuration';
 // import LootChest from './LootChest';
 import * as Utilities from './Utilities';
-import * as Movement from './Movement';
+import { PlayerBattle } from './Battle';
 
 export default function Play(event) {
   console.log('+++ Starting Play.Play()');
@@ -25,7 +25,7 @@ export default function Play(event) {
   player.toTile = [x1 + dx, y1 + dy];
   let [x2, y2] = player.toTile;
 
-  // Make sure target tile is within the gameboard
+  // We have our target coords so make sure movement is within gameboard
   if (x2 < 0 || x2 > 9 || y2 < 0 || y2 > 9) {
     // Player trying to move off the board
     alert(`${Configuration.outOfBounds} ${player.name}`);
@@ -34,7 +34,6 @@ export default function Play(event) {
 
   // Check what object - if any - is located at the target location
   let toTileObject = (Configuration.gameboard[y2][x2] instanceof Object) ? Configuration.gameboard[y2][x2].type : null;
-  // console.log('toTileObject: ' + toTileObject);
 
   switch (toTileObject) {
     case 'wall': {
@@ -50,7 +49,8 @@ export default function Play(event) {
     }
     case 'player': {
       console.log('*** Starting switch (player)');
-      // PlayerBattle(player, opponent);
+      CheckForOpponent(player, opponent);
+      PlayerBattle(player, opponent);
       break;
     }
     default: {
@@ -74,8 +74,9 @@ export default function Play(event) {
     }
   }
 
-  if (Movement.CheckForOpponent(player, opponent)) {
+  if (CheckForOpponent(player, opponent)) {
     console.log('Opponent within striking range.');
+    PlayerBattle(player, opponent);
   } else {
     console.log('Opponent not nearby.');
   }
@@ -93,4 +94,23 @@ function RestoreChest() {
     console.log('No chest to restore. Continue with current action.');
   }
   console.log('--- Ending Play.RestoreChest()');
+}
+
+function CheckForOpponent(player, opponent) {
+  // console.log('+++ Starting Movement.CheckForOpponent(player, opponent)');
+  let [x1, y1] = player.toTile;
+  let [x2, y2] = opponent.currentTile;
+
+  // Check of players are adjacent
+  if (
+    (x2 == x1) && ((y1 == y2 - 1) || (y1 == y2 + 1) || (y1 == y2)) ||
+    (y2 == y1) && ((x1 == x2 - 1) || (x1 == x2 + 1) || (x1 == x2))
+  ) {
+    return true;
+    // So no we can attack!
+  } else {
+    console.log('Players NOT adjacent');
+    // console.log('--- Ending Movement.CheckforOpponent(player, opponent');
+    return false;
+  }
 }

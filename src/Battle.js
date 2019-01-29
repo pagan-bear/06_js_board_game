@@ -1,14 +1,11 @@
-/* jshint esversion: 6 */
-/* jshint expr: true */
-/* eslint no-console: off */
-/* eslint no-unused-vars: off */
+/* eslint-disable no-console */
 
 import * as Utilities from './Utilities';
 
-export default function PlayerBattle(player, opponent) {
+export function PlayerBattle(player, opponent) {
   // console.log('+++ Starting Battle.PlayerBattle(player, opponent)');
-  // console.log(player);
-  // console.log(opponent);
+  console.log(player);
+  console.log(opponent);
 
   let attackMode = prompt(`The battle lines are drawn. (A)ttack or (D)efend ${player.name}?`).toLowerCase();
   console.log(`Battle.PlayerBattle() - Setting attack mode: ${attackMode}`);
@@ -43,8 +40,9 @@ export default function PlayerBattle(player, opponent) {
 
   function PlayerDefends(player, opponent) {
     console.log('+++ Starting Battle.PlayerBattle.PlayerDefends()');
+    console.log(player);
+    console.log(opponent);
     console.log('--- Ending Battle.PlayerBattle.PlayerDefends()');
   }
-
-  // console.log('--- Ending Battle.PlayerBattle(player, opponent)');
+  console.log('--- Ending Battle.PlayerBattle(player, opponent)');
 }

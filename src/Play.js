@@ -25,6 +25,13 @@ export default function Play(event) {
   player.toTile = [x1 + dx, y1 + dy];
   let [x2, y2] = player.toTile;
 
+  // Make sure target tile is within the gameboard
+  if (x2 < 0 || x2 > 9 || y2 < 0 || y2 > 9) {
+    // Player trying to move off the board
+    alert(`${Configuration.outOfBounds} ${player.name}`);
+    return;
+  }
+
   // Check what object - if any - is located at the target location
   let toTileObject = (Configuration.gameboard[y2][x2] instanceof Object) ? Configuration.gameboard[y2][x2].type : null;
   // console.log('toTileObject: ' + toTileObject);
@@ -75,7 +82,7 @@ export default function Play(event) {
   // if (player.steps >= 3) { Utilities.EndTurn(); }
   Utilities.UpdateGameTable();
   // console.table(Configuration.gameboard);
-  // console.log('--- Ending Play.Play()');
+  console.log('--- Ending Play.Play()');
 }
 
 function RestoreChest() {

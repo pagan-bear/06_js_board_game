@@ -1,7 +1,6 @@
 /* eslint-disable no-console */
 
 import Configuration from './Configuration';
-// import LootChest from './LootChest';
 import * as Utilities from './Utilities';
 import { PlayerBattle } from './Battle';
 
@@ -15,9 +14,10 @@ export default function Play(event) {
   // Set player and opponent variables
   let player = Configuration.player1.active ? Configuration.player1 : Configuration.player2;
   let opponent = (player === Configuration.player1) ? Configuration.player2 : Configuration.player1;
+  console.log(player);
+  console.log(opponent);
 
   // Check to see if there is a chest to restore and if so, restore it
-  RestoreChest();
 
   // Assign the movement differentials and set up tile locations
   let dx = validKey.dx, dy = validKey.dy;
@@ -43,18 +43,21 @@ export default function Play(event) {
     }
     case 'chest': {
       console.log('*** Starting switch (chest)');
-      // LootChest(x2, y2);
+      // CheckForOpponent(player, opponent);
+
+      // LootChest(player.toTile);
+
       // player.steps++;
       break;
     }
     case 'player': {
       console.log('*** Starting switch (player)');
-      CheckForOpponent(player, opponent);
-      PlayerBattle(player, opponent);
       break;
     }
     default: {
       console.log('*** Starting switch (default)');
+      // CheckForOpponent(player, opponent);
+
       // Move player from fromTile to toTile
       player.clearToken();
       player.fillToken();
@@ -74,43 +77,40 @@ export default function Play(event) {
     }
   }
 
-  if (CheckForOpponent(player, opponent)) {
-    console.log('Opponent within striking range.');
-    PlayerBattle(player, opponent);
-  } else {
-    console.log('Opponent not nearby.');
-  }
   // if (player.steps >= 3) { Utilities.EndTurn(); }
+
   Utilities.UpdateGameTable();
+
   // console.table(Configuration.gameboard);
   console.log('--- Ending Play.Play()');
 }
 
-function RestoreChest() {
-  console.log('+++ Starting Play.RestoreChest()');
-  if (Configuration.restoreChest) {
-    console.log('Chest needs to be restored');
-  } else {
-    console.log('No chest to restore. Continue with current action.');
-  }
-  console.log('--- Ending Play.RestoreChest()');
-}
+// function CheckForOpponent(player, opponent) {
+//   // console.log('+++ Starting Movement.CheckForOpponent(player, opponent)');
+//   let [x1, y1] = player.toTile;
+//   let [x2, y2] = opponent.currentTile;
 
-function CheckForOpponent(player, opponent) {
-  // console.log('+++ Starting Movement.CheckForOpponent(player, opponent)');
-  let [x1, y1] = player.toTile;
-  let [x2, y2] = opponent.currentTile;
+//   // Check of players are adjacent
+//   if (
+//     (x2 == x1) && ((y1 == y2 - 1) || (y1 == y2 + 1) || (y1 == y2)) ||
+//     (y2 == y1) && ((x1 == x2 - 1) || (x1 == x2 + 1) || (x1 == x2))
+//   ) {
+//     return true;
+//     // So no we can attack!
+//   } else {
+//     console.log('Players NOT adjacent');
+//     // console.log('--- Ending Movement.CheckforOpponent(player, opponent');
+//     return false;
+//   }
+// }
 
-  // Check of players are adjacent
-  if (
-    (x2 == x1) && ((y1 == y2 - 1) || (y1 == y2 + 1) || (y1 == y2)) ||
-    (y2 == y1) && ((x1 == x2 - 1) || (x1 == x2 + 1) || (x1 == x2))
-  ) {
-    return true;
-    // So no we can attack!
-  } else {
-    console.log('Players NOT adjacent');
-    // console.log('--- Ending Movement.CheckforOpponent(player, opponent');
-    return false;
-  }
-}
+// function RestoreChest() {
+//   console.log('+++ Starting Play.RestoreChest()');
+//   if (Configuration.restoreChest) {
+//     console.log('Chest needs to be restored');
+//   } else {
+//     console.log('No chest to restore. Continue with current action.');
+//   }
+//   console.log('--- Ending Play.RestoreChest()');
+// }
+

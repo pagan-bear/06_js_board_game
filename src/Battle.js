@@ -3,20 +3,18 @@
 import * as Utilities from './Utilities';
 
 export function PlayerBattle(player, opponent) {
-  // console.log('+++ Starting Battle.PlayerBattle(player, opponent)');
-  console.log(player);
-  console.log(opponent);
+  console.log('+++ Starting Battle.PlayerBattle(player, opponent)');
 
   let attackMode = prompt(`The battle lines are drawn. (A)ttack or (D)efend ${player.name}?`).toLowerCase();
   console.log(`Battle.PlayerBattle() - Setting attack mode: ${attackMode}`);
 
   switch (attackMode) {
     case 'a': {
-      PlayerAttacks(player, opponent);
+      PlayerAttack(player, opponent);
       break;
     }
     case 'd': {
-      PlayerDefends(player, opponent);
+      PlayerDefend(player, opponent);
       break;
     }
     default: {
@@ -25,7 +23,7 @@ export function PlayerBattle(player, opponent) {
     }
   }
 
-  function PlayerAttacks(player, opponent) {
+  function PlayerAttack(player, opponent) {
     console.log('+++ Starting Battle.PlayerBattle.PlayerAttacks()');
     let damage = Utilities.RandomNumber(player.weapon.maxDamage / 2, player.weapon.maxDamage);
     console.log(`${player.name} attacks ${opponent.name} for ${damage} damage`);
@@ -38,7 +36,7 @@ export function PlayerBattle(player, opponent) {
     console.log('--- Ending Battle.PlayerBattle.PlayerAttacks()');
   }
 
-  function PlayerDefends(player, opponent) {
+  function PlayerDefend(player, opponent) {
     console.log('+++ Starting Battle.PlayerBattle.PlayerDefends()');
     console.log(player);
     console.log(opponent);

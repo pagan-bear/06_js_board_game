@@ -3,9 +3,10 @@
 import Configuration from './Configuration';
 import * as Utilities from './Utilities';
 import { PlayerBattle } from './Battle';
+// import { PlayerBattle } from './Battle';
 
 export default function Play(event) {
-  console.log('+++ Starting Play.Play()');
+  // console.log('+++ Starting Play.Play()');
 
   // Check valid key pressed
   let validKey = Configuration.arrowKeys.find(key => key.id == event.keyCode);
@@ -14,8 +15,6 @@ export default function Play(event) {
   // Set player and opponent variables
   let player = Configuration.player1.active ? Configuration.player1 : Configuration.player2;
   let opponent = (player === Configuration.player1) ? Configuration.player2 : Configuration.player1;
-  console.log(player);
-  console.log(opponent);
 
   // Check to see if there is a chest to restore and if so, restore it
 
@@ -37,27 +36,25 @@ export default function Play(event) {
 
   switch (toTileObject) {
     case 'wall': {
-      console.log('*** Starting switch (wall)');
+      // console.log('*** Starting switch (wall)');
       alert(`${Configuration.foundWall} ${Configuration.player1.name}...`);
       break;
     }
     case 'chest': {
-      console.log('*** Starting switch (chest)');
-      // CheckForOpponent(player, opponent);
-
+      // console.log('*** Starting switch (chest)');
       // LootChest(player.toTile);
+
+      // if (Utilities.CheckForOpponent(player, opponent)) { PlayerBattle(player, opponent); }
 
       // player.steps++;
       break;
     }
-    case 'player': {
-      console.log('*** Starting switch (player)');
-      break;
-    }
+    // case 'player': {
+    //   console.log('*** Starting switch (player)');
+    //   break;
+    // }
     default: {
-      console.log('*** Starting switch (default)');
-      // CheckForOpponent(player, opponent);
-
+      // console.log('*** Starting switch (default)');
       // Move player from fromTile to toTile
       player.clearToken();
       player.fillToken();
@@ -73,8 +70,11 @@ export default function Play(event) {
       player.steps++;
 
       // Check to see if we have to restore a chest
-      console.log('*** Ending switch (default)');
+      // console.log('*** Ending switch (default)');
     }
+      // Check if player and opponent adjacent and commence battle if so
+      if (Utilities.CheckForOpponent(player, opponent)) { PlayerBattle(player, opponent); }
+
   }
 
   // if (player.steps >= 3) { Utilities.EndTurn(); }
@@ -82,11 +82,11 @@ export default function Play(event) {
   Utilities.UpdateGameTable();
 
   // console.table(Configuration.gameboard);
-  console.log('--- Ending Play.Play()');
+  // console.log('--- Ending Play.Play()');
 }
 
 // function CheckForOpponent(player, opponent) {
-//   // console.log('+++ Starting Movement.CheckForOpponent(player, opponent)');
+//   console.log('+++ Starting Movement.CheckForOpponent(player, opponent)');
 //   let [x1, y1] = player.toTile;
 //   let [x2, y2] = opponent.currentTile;
 
@@ -95,11 +95,15 @@ export default function Play(event) {
 //     (x2 == x1) && ((y1 == y2 - 1) || (y1 == y2 + 1) || (y1 == y2)) ||
 //     (y2 == y1) && ((x1 == x2 - 1) || (x1 == x2 + 1) || (x1 == x2))
 //   ) {
+//     console.log('Players ARE adjacent');
+//     console.log('Battle about to begin');
+//     console.log('--- Ending Movement.CheckforOpponent(player, opponent');
 //     return true;
 //     // So no we can attack!
 //   } else {
 //     console.log('Players NOT adjacent');
-//     // console.log('--- Ending Movement.CheckforOpponent(player, opponent');
+//     console.log('There will be no battle');
+//     console.log('--- Ending Movement.CheckforOpponent(player, opponent');
 //     return false;
 //   }
 // }

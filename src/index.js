@@ -5,9 +5,8 @@ import { Initialise } from './Initialise';
 import Play from './Play';
 import * as Utilities from './Utilities';
 
-console.log('+++ Starting game initialisation (index.js)');
+// Initialise the gameboard and tokens
 Initialise();
-console.log('+++ Game initialisation complete (index.js)');
 
 // Game movement
 $('body').on('keydown', (event) => Play(event));

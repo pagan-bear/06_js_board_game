@@ -4,6 +4,30 @@
 import Configuration from './Configuration';
 import * as Utilities from './Utilities';
 
+// Check if player and opponent are adjacent
+export function CheckForOpponent(player, opponent) {
+  console.log('+++ Starting Movement.CheckForOpponent(player, opponent)');
+  let [x1, y1] = player.toTile;
+  let [x2, y2] = opponent.currentTile;
+
+  // Check of players are adjacent
+  if (
+    (x2 == x1) && ((y1 == y2 - 1) || (y1 == y2 + 1) || (y1 == y2)) ||
+    (y2 == y1) && ((x1 == x2 - 1) || (x1 == x2 + 1) || (x1 == x2))
+  ) {
+    console.log('Players ARE adjacent');
+    console.log('Battle about to begin');
+    console.log('--- Ending Movement.CheckforOpponent(player, opponent');
+    return true;
+    // So no we can attack!
+  } else {
+    console.log('Players NOT adjacent');
+    console.log('There will be no battle');
+    console.log('--- Ending Movement.CheckforOpponent(player, opponent');
+    return false;
+  }
+}
+
 // Generate a random number between min and max
 export function RandomNumber(min, max) {
   if (max < min) { [min, max] = [max, min]; }

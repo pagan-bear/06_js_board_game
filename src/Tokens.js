@@ -11,9 +11,8 @@ export default class Token {
     this.id = id;
     this.type = type;
     this.color = this.assignColor();
-    this.currentTile = Utilities.SetCoords();
-    this.fromTile = this.currentTile;
-    this.toTile = this.currentTile;
+    this.fromTile = Utilities.SetCoords();
+    this.toTile = this.fromTile;
     this.width = Configuration.dx;
     this.height = Configuration.dy;
     this.active = false;
@@ -74,23 +73,8 @@ export class Chest extends Token {
     this.type = 'chest';
     this.weapon = Configuration.weapons[this.pickRandomWeapon(Configuration.weapons)];
   }
-
-  fillChestToken() {
-    console.log('+++ Starting Chest.fillChestToken()');
-    let [x, y] = this.currentTile;
-
-    Configuration.context.fillStyle = this.color;
-    Configuration.context.fillRect(
-      x * this.width,
-      y * this.height,
-      this.width,
-      this.height
-    );
-    console.log('--- Ending Chest.fillChestToken()');
-  }
-  // Select random weapon from (Configuration) weapons list
+  // Local method - only used during initialisation
   pickRandomWeapon(weapons) {
-    // console.log('Starting Utilities.PickRandomChest');
     let chest;
     let count = 0;
     for (let weapon in weapons)

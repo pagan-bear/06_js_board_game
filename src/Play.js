@@ -36,6 +36,8 @@ export default function Play(event) {
   // Check what object - if any - is located at the target location
   let toTileObject = (Configuration.gameboard[y2][x2] instanceof Object) ? Configuration.gameboard[y2][x2].type : null;
 
+  console.log('+++ Starting Play.switch(toTileObject');
+
   switch (toTileObject) {
     case 'wall': {
       // console.log('*** Starting switch (wall)');
@@ -51,12 +53,13 @@ export default function Play(event) {
       // player.steps++;
       break;
     }
-    // case 'player': {
-    //   console.log('*** Starting switch (player)');
-    //   break;
-    // }
+    case 'player': {
+      console.log('*** Starting switch (player)');
+      Battle(player, opponent);
+      break;
+    }
     default: {
-      // console.log('*** Starting switch (default)');
+      console.log('*** Starting Play.switch (default)');
       // Move player from fromTile to toTile
       player.clearToken();
       player.fillToken();
@@ -72,23 +75,31 @@ export default function Play(event) {
       player.steps++;
 
       // Check to see if we have to restore a chest
-      // console.log('*** Ending switch (default)');
+      console.log('*** Ending Play.switch (default)');
     }
       // Check if player and opponent adjacent and commence battle if so
-      if (Utilities.CheckForOpponent(player, opponent)) { Battle(player, opponent); }
-
+      if (Utilities.CheckForOpponent(player, opponent)) { 
+        Battle(player, opponent); 
+        [player, opponent] = [opponent, player];
+      }
   }
+
+  console.log('--- Ending Play.switch(toTileObject)');
 
   // if (player.steps >= 3) { Utilities.EndTurn(); }
 
   Utilities.UpdateGameTable();
+  console.log('player');
+  console.log(player);
+  console.log('opponent');
+  console.log(opponent);
 
   // console.table(Configuration.gameboard);
   // console.log('--- Ending Play.Play()');
 }
 
 export function Battle(player, opponent) {
-  console.log('+++ Starting Battle.PlayerBattle(player, opponent)');
+  console.log('+++ Starting Battle(player, opponent)');
 
   let attackMode = prompt(`The battle lines are drawn. (A)ttack or (D)efend ${player.name}?`).toLowerCase();
   console.log(`Battle.PlayerBattle() - Setting attack mode: ${attackMode}`);
@@ -109,7 +120,7 @@ export function Battle(player, opponent) {
   }
 
   function Attack(player, opponent) {
-    console.log('+++ Starting Battle.PlayerBattle.PlayerAttacks()');
+    console.log('+++ Starting Battle.PlayerAttacks()');
     let damage = Utilities.RandomNumber(player.weapon.maxDamage / 2, player.weapon.maxDamage);
     console.log(`${player.name} attacks ${opponent.name} for ${damage} damage`);
     opponent.life -= damage;
@@ -118,16 +129,16 @@ export function Battle(player, opponent) {
     // Update game status table and end turn
     Utilities.UpdateGameTable();
     Utilities.EndTurn();
-    console.log('--- Ending Battle.PlayerBattle.PlayerAttacks()');
+    console.log('--- Ending Battle.PlayerAttacks()');
   }
 
   function Defend(player, opponent) {
-    console.log('+++ Starting Battle.PlayerBattle.PlayerDefends()');
+    console.log('+++ Starting Battle.Defend()');
     console.log(player);
     console.log(opponent);
-    console.log('--- Ending Battle.PlayerBattle.PlayerDefends()');
+    console.log('--- Ending Battle.Defend()');
   }
-  console.log('--- Ending Battle.PlayerBattle(player, opponent)');
+  console.log('--- Ending Battle(player, opponent)');
 }
 
 // function CheckForOpponent(player, opponent) {

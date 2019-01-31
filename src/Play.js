@@ -12,14 +12,16 @@ export default function Play(event) {
   let validKey = Configuration.arrowKeys.find(key => key.id == event.keyCode);
   if (!validKey) return;
 
-  // Set player and opponent variables
+  // Assign the movement differentials
+  let dx = validKey.dx, dy = validKey.dy;
+
+  // Assign player and opponent variables
   let player = Configuration.player1.active ? Configuration.player1 : Configuration.player2;
   let opponent = (player === Configuration.player1) ? Configuration.player2 : Configuration.player1;
 
   // Check to see if there is a chest to restore and if so, restore it
 
-  // Assign the movement differentials and set up tile locations
-  let dx = validKey.dx, dy = validKey.dy;
+  // Set up to and from tiles
   let [x1, y1] = player.fromTile;
   player.toTile = [x1 + dx, y1 + dy];
   let [x2, y2] = player.toTile;
@@ -73,7 +75,7 @@ export default function Play(event) {
       // console.log('*** Ending switch (default)');
     }
       // Check if player and opponent adjacent and commence battle if so
-      if (Utilities.CheckForOpponent(player, opponent)) { PlayerBattle(player, opponent); }
+      if (Utilities.CheckForOpponent(player, opponent)) { Battle(player, opponent); }
 
   }
 
@@ -83,6 +85,49 @@ export default function Play(event) {
 
   // console.table(Configuration.gameboard);
   // console.log('--- Ending Play.Play()');
+}
+
+export function Battle(player, opponent) {
+  console.log('+++ Starting Battle.PlayerBattle(player, opponent)');
+
+  let attackMode = prompt(`The battle lines are drawn. (A)ttack or (D)efend ${player.name}?`).toLowerCase();
+  console.log(`Battle.PlayerBattle() - Setting attack mode: ${attackMode}`);
+
+  switch (attackMode) {
+    case 'a': {
+      Attack(player, opponent);
+      break;
+    }
+    case 'd': {
+      Defend(player, opponent);
+      break;
+    }
+    default: {
+      console.log(`Invalid battle code ${player.name}. Try again`);
+      break;
+    }
+  }
+
+  function Attack(player, opponent) {
+    console.log('+++ Starting Battle.PlayerBattle.PlayerAttacks()');
+    let damage = Utilities.RandomNumber(player.weapon.maxDamage / 2, player.weapon.maxDamage);
+    console.log(`${player.name} attacks ${opponent.name} for ${damage} damage`);
+    opponent.life -= damage;
+    console.log(`${opponent.name}'s life left: ${opponent.life}`);
+
+    // Update game status table and end turn
+    Utilities.UpdateGameTable();
+    Utilities.EndTurn();
+    console.log('--- Ending Battle.PlayerBattle.PlayerAttacks()');
+  }
+
+  function Defend(player, opponent) {
+    console.log('+++ Starting Battle.PlayerBattle.PlayerDefends()');
+    console.log(player);
+    console.log(opponent);
+    console.log('--- Ending Battle.PlayerBattle.PlayerDefends()');
+  }
+  console.log('--- Ending Battle.PlayerBattle(player, opponent)');
 }
 
 // function CheckForOpponent(player, opponent) {
@@ -107,56 +152,3 @@ export default function Play(event) {
 //     return false;
 //   }
 // }
-
-// function RestoreChest() {
-//   console.log('+++ Starting Play.RestoreChest()');
-//   if (Configuration.restoreChest) {
-//     console.log('Chest needs to be restored');
-//   } else {
-//     console.log('No chest to restore. Continue with current action.');
-//   }
-//   console.log('--- Ending Play.RestoreChest()');
-// }
-
-export function PlayerBattle(player, opponent) {
-  console.log('+++ Starting Battle.PlayerBattle(player, opponent)');
-
-  let attackMode = prompt(`The battle lines are drawn. (A)ttack or (D)efend ${player.name}?`).toLowerCase();
-  console.log(`Battle.PlayerBattle() - Setting attack mode: ${attackMode}`);
-
-  switch (attackMode) {
-    case 'a': {
-      PlayerAttack(player, opponent);
-      break;
-    }
-    case 'd': {
-      PlayerDefend(player, opponent);
-      break;
-    }
-    default: {
-      console.log(`Invalid battle code ${player.name}. Try again`);
-      break;
-    }
-  }
-
-  function PlayerAttack(player, opponent) {
-    console.log('+++ Starting Battle.PlayerBattle.PlayerAttacks()');
-    let damage = Utilities.RandomNumber(player.weapon.maxDamage / 2, player.weapon.maxDamage);
-    console.log(`${player.name} attacks ${opponent.name} for ${damage} damage`);
-    opponent.life -= damage;
-    console.log(`${opponent.name}'s life left: ${opponent.life}`);
-
-    // Update game status table and end turn
-    Utilities.UpdateGameTable();
-    Utilities.EndTurn();
-    console.log('--- Ending Battle.PlayerBattle.PlayerAttacks()');
-  }
-
-  function PlayerDefend(player, opponent) {
-    console.log('+++ Starting Battle.PlayerBattle.PlayerDefends()');
-    console.log(player);
-    console.log(opponent);
-    console.log('--- Ending Battle.PlayerBattle.PlayerDefends()');
-  }
-  console.log('--- Ending Battle.PlayerBattle(player, opponent)');
-}

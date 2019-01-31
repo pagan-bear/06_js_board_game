@@ -2,7 +2,6 @@
 /* global $ */
 
 import Configuration from './Configuration';
-import * as Utilities from './Utilities';
 
 // Check if player and opponent are adjacent
 export function CheckForOpponent(player, opponent) {
@@ -53,8 +52,8 @@ export function TokenCollision(x1, y1, x2, y2) {
 // During intialisation set coordinates
 export function SetCoords() {
   // console.log('Starting Tokens.Token.initialiseCoordinates()');
-  let x = Utilities.RandomNumber(Configuration.minX, Configuration.maxX);
-  let y = Utilities.RandomNumber(Configuration.minY, Configuration.maxY);
+  let x = RandomNumber(Configuration.minX, Configuration.maxX);
+  let y = RandomNumber(Configuration.minY, Configuration.maxY);
 
   return [x, y];
 }
@@ -147,4 +146,14 @@ export function LootChest(x2, y2) {
 
   // Move player to chest position
   console.log('--- Ending LootChest.LootChest(player)');
+}
+
+export function RestoreChest() {
+  console.log('+++ Starting Play.RestoreChest()');
+  if (Configuration.restoreChest) {
+    console.log('Chest needs to be restored');
+  } else {
+    console.log('No chest to restore. Continue with current action.');
+  }
+  console.log('--- Ending Play.RestoreChest()');
 }

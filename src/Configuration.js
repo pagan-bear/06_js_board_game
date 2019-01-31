@@ -1,6 +1,4 @@
-/* jshint esversion: 6 */
-/* jshint expr: true */
-/* elsint no-console: off */
+/* eslint-disable no-console */
 
 export default {
   canvasWidth: 400,

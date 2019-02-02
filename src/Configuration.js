@@ -32,8 +32,8 @@ export default {
 
   minWalls: 8,
   maxWalls: 8,
-  minChests: 4,
-  maxChests: 4,
+  minChests: 8,
+  maxChests: 8,
 
   arrowKeys: [
     { id: 37, name: 'ArrowLeft', dx: -1, dy: 0 },

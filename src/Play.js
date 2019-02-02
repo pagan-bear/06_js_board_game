@@ -2,8 +2,6 @@
 
 import Configuration from './Configuration';
 import * as Utilities from './Utilities';
-// import { PlayerBattle } from './Battle';
-// import { PlayerBattle } from './Battle';
 
 export default function Play(event) {
   // console.log('+++ Starting Play.Play()');
@@ -37,7 +35,6 @@ export default function Play(event) {
   let toTileObject = (Configuration.gameboard[y2][x2] instanceof Object) ? Configuration.gameboard[y2][x2].type : null;
 
   console.log('+++ Starting Play.switch(toTileObject');
-
   switch (toTileObject) {
     case 'wall': {
       // console.log('*** Starting switch (wall)');
@@ -45,21 +42,23 @@ export default function Play(event) {
       break;
     }
     case 'chest': {
-      // console.log('*** Starting switch (chest)');
-      // LootChest(player.toTile);
-
-      // if (Utilities.CheckForOpponent(player, opponent)) { PlayerBattle(player, opponent); }
+      console.log('*** Starting switch (chest)');
+      RestoreChest();
+      LootChest(player, player.toTile);
+      if (Utilities.CheckForOpponent(player, opponent)) { Battle(player, opponent); }
 
       // player.steps++;
       break;
     }
     case 'player': {
       console.log('*** Starting switch (player)');
+      RestoreChest();
       Battle(player, opponent);
       break;
     }
     default: {
       console.log('*** Starting Play.switch (default)');
+      RestoreChest();
       // Move player from fromTile to toTile
       player.clearToken();
       player.fillToken();
@@ -134,32 +133,51 @@ export function Battle(player, opponent) {
 
   function Defend(player, opponent) {
     console.log('+++ Starting Battle.Defend()');
-    console.log(player);
-    console.log(opponent);
+    let damage = Utilities.RandomNumber(player.weapon.maxDamage / 4, player.weapon.maxDamage / 2);
+    console.log(`${player.name} defends against ${opponent.name} for ${damage} damage`);
+    player.life -= damage;
+    console.log(`${player.name}'s life left: ${player.life}`);
+
+    // Update game status table and end turn
+    Utilities.UpdateGameTable();
+    Utilities.EndTurn();
     console.log('--- Ending Battle.Defend()');
   }
   console.log('--- Ending Battle(player, opponent)');
 }
 
-// function CheckForOpponent(player, opponent) {
-//   console.log('+++ Starting Movement.CheckForOpponent(player, opponent)');
-//   let [x1, y1] = player.toTile;
-//   let [x2, y2] = opponent.currentTile;
+export function LootChest(player, toTile) {
+  console.log('+++ Starting LootChest.LootChest(player)');
 
-//   // Check of players are adjacent
-//   if (
-//     (x2 == x1) && ((y1 == y2 - 1) || (y1 == y2 + 1) || (y1 == y2)) ||
-//     (y2 == y1) && ((x1 == x2 - 1) || (x1 == x2 + 1) || (x1 == x2))
-//   ) {
-//     console.log('Players ARE adjacent');
-//     console.log('Battle about to begin');
-//     console.log('--- Ending Movement.CheckforOpponent(player, opponent');
-//     return true;
-//     // So no we can attack!
-//   } else {
-//     console.log('Players NOT adjacent');
-//     console.log('There will be no battle');
-//     console.log('--- Ending Movement.CheckforOpponent(player, opponent');
-//     return false;
-//   }
-// }
+  // Save weapon and chest details to Configuration.chest
+  let [x, y] = [...toTile];
+
+  console.log([`toTile, x, y: ${toTile}, ${x}, ${y}`]);
+
+  // Swap player and chest weapons
+  [Configuration.gameboard[y][x].weapon, player.weapon] =
+    [player.weapon, Configuration.gameboard[y][x].weapon];
+
+  // Save the chest object to Configuration variable
+  Configuration.chest = Configuration.gameboard[y][x];
+
+  // Set flag to restore chest to it's original location when player moves
+  Configuration.restoreChest = true;
+
+  // Move player to chest tile
+  player.clearToken();
+  player.fillToken();
+  player.currentTile = [x, y];
+  Configuration.gameboard[y][x] = null;
+
+  // Move player to chest position
+  console.log('--- Ending LootChest.LootChest(player)');
+}
+
+export function RestoreChest() {
+  console.log('+++ Starting Play.RestoreChest()');
+  console.log(`Configuration.restoreChes: ${Configuration.restoreChest}`);
+  if (!Configuration.restoreChest) { return; }
+  console.log('--- Ending Play.RestoreChest()');
+
+}

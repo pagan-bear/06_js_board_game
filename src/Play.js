@@ -5,7 +5,6 @@ import * as Utilities from './Utilities';
 
 export default function Play(event) {
   // console.log('+++ Starting Play.Play()');
-
   // Check valid key pressed
   let validKey = Configuration.arrowKeys.find(key => key.id == event.keyCode);
   if (!validKey) return;
@@ -43,8 +42,10 @@ export default function Play(event) {
     }
     case 'chest': {
       console.log('*** Starting switch (chest)');
-      RestoreChest();
-      LootChest(player, player.toTile);
+      // RestoreChest();
+      Configuration.chest = Configuration.gameboard[y2][x2];
+      console.log(Configuration.chest);
+      LootChest(player, Configuration.chest);
       if (Utilities.CheckForOpponent(player, opponent)) { Battle(player, opponent); }
 
       // player.steps++;
@@ -52,7 +53,7 @@ export default function Play(event) {
     }
     case 'player': {
       console.log('*** Starting switch (player)');
-      RestoreChest();
+      // RestoreChest();
       Battle(player, opponent);
       break;
     }
@@ -77,8 +78,8 @@ export default function Play(event) {
       console.log('*** Ending Play.switch (default)');
     }
       // Check if player and opponent adjacent and commence battle if so
-      if (Utilities.CheckForOpponent(player, opponent)) { 
-        Battle(player, opponent); 
+      if (Utilities.CheckForOpponent(player, opponent)) {
+        Battle(player, opponent);
         [player, opponent] = [opponent, player];
       }
   }
@@ -146,29 +147,30 @@ export function Battle(player, opponent) {
   console.log('--- Ending Battle(player, opponent)');
 }
 
-export function LootChest(player, toTile) {
+export function LootChest(player, chest) {
   console.log('+++ Starting LootChest.LootChest(player)');
-
   // Save weapon and chest details to Configuration.chest
-  let [x, y] = [...toTile];
-
-  console.log([`toTile, x, y: ${toTile}, ${x}, ${y}`]);
+  console.log(player);
+  console.log(chest);
 
   // Swap player and chest weapons
+  let [x, y] = chest.fromTile;
+  console.log(`chest.fromTile, x, y: ${chest.fromTile}, ${x}, ${y}`);
   [Configuration.gameboard[y][x].weapon, player.weapon] =
     [player.weapon, Configuration.gameboard[y][x].weapon];
 
-  // Save the chest object to Configuration variable
-  Configuration.chest = Configuration.gameboard[y][x];
+  // // Save the chest object to Configuration variable
+  // Configuration.chest = Configuration.gameboard[y][x];
+  // console.table(Configuration.gameboard);
 
-  // Set flag to restore chest to it's original location when player moves
-  Configuration.restoreChest = true;
+  // // Set flag to restore chest to it's original location when player moves
+  // Configuration.restoreChest = true;
 
-  // Move player to chest tile
-  player.clearToken();
-  player.fillToken();
-  player.currentTile = [x, y];
-  Configuration.gameboard[y][x] = null;
+  // // Move player to chest tile
+  // player.clearToken();
+  // player.fillToken();
+  // player.fromTile = [x, y];
+  // Configuration.gameboard[y][x] = null;
 
   // Move player to chest position
   console.log('--- Ending LootChest.LootChest(player)');

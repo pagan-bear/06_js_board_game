@@ -17,6 +17,7 @@ export default function Play(event) {
   let opponent = (player === Configuration.player1) ? Configuration.player2 : Configuration.player1;
 
   // Check to see if there is a chest to restore and if so, restore it
+  console.log(`Configuration.restoreChest: ${Configuration.restoreChest}`);
 
   // Set up to and from tiles
   let [x1, y1] = player.fromTile;
@@ -46,7 +47,7 @@ export default function Play(event) {
       Configuration.chest = Configuration.gameboard[y2][x2];
       console.log(Configuration.chest);
       LootChest(player, Configuration.chest);
-      if (Utilities.CheckForOpponent(player, opponent)) { Battle(player, opponent); }
+      // if (Utilities.CheckForOpponent(player, opponent)) { Battle(player, opponent); }
 
       // player.steps++;
       break;
@@ -54,12 +55,12 @@ export default function Play(event) {
     case 'player': {
       console.log('*** Starting switch (player)');
       // RestoreChest();
-      Battle(player, opponent);
+      // Battle(player, opponent);
       break;
     }
     default: {
       console.log('*** Starting Play.switch (default)');
-      RestoreChest();
+      // RestoreChest();
       // Move player from fromTile to toTile
       player.clearToken();
       player.fillToken();
@@ -71,17 +72,19 @@ export default function Play(event) {
       Configuration.gameboard[y2][x2] = player;
       player.fromTile = player.toTile;
 
+      console.table(Configuration.gameboard);
+
       // Increment player steps
       player.steps++;
 
       // Check to see if we have to restore a chest
       console.log('*** Ending Play.switch (default)');
-    }
+      // }
       // Check if player and opponent adjacent and commence battle if so
-      if (Utilities.CheckForOpponent(player, opponent)) {
-        Battle(player, opponent);
-        [player, opponent] = [opponent, player];
-      }
+      // if (Utilities.CheckForOpponent(player, opponent)) {
+      //   Battle(player, opponent);
+      //   [player, opponent] = [opponent, player];
+    }
   }
 
   console.log('--- Ending Play.switch(toTileObject)');
@@ -98,54 +101,54 @@ export default function Play(event) {
   // console.log('--- Ending Play.Play()');
 }
 
-export function Battle(player, opponent) {
-  console.log('+++ Starting Battle(player, opponent)');
+// export function Battle(player, opponent) {
+//   console.log('+++ Starting Battle(player, opponent)');
 
-  let attackMode = prompt(`The battle lines are drawn. (A)ttack or (D)efend ${player.name}?`).toLowerCase();
-  console.log(`Battle.PlayerBattle() - Setting attack mode: ${attackMode}`);
+//   let attackMode = prompt(`The battle lines are drawn. (A)ttack or (D)efend ${player.name}?`).toLowerCase();
+//   console.log(`Battle.PlayerBattle() - Setting attack mode: ${attackMode}`);
 
-  switch (attackMode) {
-    case 'a': {
-      Attack(player, opponent);
-      break;
-    }
-    case 'd': {
-      Defend(player, opponent);
-      break;
-    }
-    default: {
-      console.log(`Invalid battle code ${player.name}. Try again`);
-      break;
-    }
-  }
+//   switch (attackMode) {
+//     case 'a': {
+//       Attack(player, opponent);
+//       break;
+//     }
+//     case 'd': {
+//       Defend(player, opponent);
+//       break;
+//     }
+//     default: {
+//       console.log(`Invalid battle code ${player.name}. Try again`);
+//       break;
+//     }
+//   }
 
-  function Attack(player, opponent) {
-    console.log('+++ Starting Battle.PlayerAttacks()');
-    let damage = Utilities.RandomNumber(player.weapon.maxDamage / 2, player.weapon.maxDamage);
-    console.log(`${player.name} attacks ${opponent.name} for ${damage} damage`);
-    opponent.life -= damage;
-    console.log(`${opponent.name}'s life left: ${opponent.life}`);
+//   function Attack(player, opponent) {
+//     console.log('+++ Starting Battle.PlayerAttacks()');
+//     let damage = Utilities.RandomNumber(player.weapon.maxDamage / 2, player.weapon.maxDamage);
+//     console.log(`${player.name} attacks ${opponent.name} for ${damage} damage`);
+//     opponent.life -= damage;
+//     console.log(`${opponent.name}'s life left: ${opponent.life}`);
 
-    // Update game status table and end turn
-    Utilities.UpdateGameTable();
-    Utilities.EndTurn();
-    console.log('--- Ending Battle.PlayerAttacks()');
-  }
+//     // Update game status table and end turn
+//     Utilities.UpdateGameTable();
+//     Utilities.EndTurn();
+//     console.log('--- Ending Battle.PlayerAttacks()');
+//   }
 
-  function Defend(player, opponent) {
-    console.log('+++ Starting Battle.Defend()');
-    let damage = Utilities.RandomNumber(player.weapon.maxDamage / 4, player.weapon.maxDamage / 2);
-    console.log(`${player.name} defends against ${opponent.name} for ${damage} damage`);
-    player.life -= damage;
-    console.log(`${player.name}'s life left: ${player.life}`);
+//   function Defend(player, opponent) {
+//     console.log('+++ Starting Battle.Defend()');
+//     let damage = Utilities.RandomNumber(player.weapon.maxDamage / 4, player.weapon.maxDamage / 2);
+//     console.log(`${player.name} defends against ${opponent.name} for ${damage} damage`);
+//     player.life -= damage;
+//     console.log(`${player.name}'s life left: ${player.life}`);
 
-    // Update game status table and end turn
-    Utilities.UpdateGameTable();
-    Utilities.EndTurn();
-    console.log('--- Ending Battle.Defend()');
-  }
-  console.log('--- Ending Battle(player, opponent)');
-}
+//     // Update game status table and end turn
+//     Utilities.UpdateGameTable();
+//     Utilities.EndTurn();
+//     console.log('--- Ending Battle.Defend()');
+//   }
+//   console.log('--- Ending Battle(player, opponent)');
+// }
 
 export function LootChest(player, chest) {
   console.log('+++ Starting LootChest.LootChest(player)');
@@ -155,22 +158,30 @@ export function LootChest(player, chest) {
 
   // Swap player and chest weapons
   let [x, y] = chest.fromTile;
-  console.log(`chest.fromTile, x, y: ${chest.fromTile}, ${x}, ${y}`);
+  console.log(`chest.fromTile, x, y: ${chest.fromTile}`);
+  console.log(`player.fromTile: ${player.fromTile}`);
+  console.log(`player.toTile: ${player.toTile}`);
   [Configuration.gameboard[y][x].weapon, player.weapon] =
     [player.weapon, Configuration.gameboard[y][x].weapon];
 
-  // // Save the chest object to Configuration variable
-  // Configuration.chest = Configuration.gameboard[y][x];
-  // console.table(Configuration.gameboard);
+  // Save the chest object Configuration variables
+  Configuration.chest = Configuration.gameboard[y][x];
+  Configuration.restoreChest = true;
 
-  // // Set flag to restore chest to it's original location when player moves
-  // Configuration.restoreChest = true;
+  // Move player to chest tile
+  player.clearToken();
+  player.fillToken();
 
-  // // Move player to chest tile
-  // player.clearToken();
-  // player.fillToken();
-  // player.fromTile = [x, y];
-  // Configuration.gameboard[y][x] = null;
+  // Make player.fromTile equal to chest to fromTile
+  player.fromTile = chest.fromTile;
+
+  // Update gameboard
+  console.log(`Configuration.gameboard[${y}][${x}]: ${Configuration.gameboard[y][x]}`);
+  let [x2, y2] = [...player.toTile];
+  console.log(`[y2][x2]: [${y2}][${x2}]`);
+  // Configuration.gameboard[y2][x2] = player;
+
+  console.table(Configuration.gameboard);
 
   // Move player to chest position
   console.log('--- Ending LootChest.LootChest(player)');
@@ -178,7 +189,7 @@ export function LootChest(player, chest) {
 
 export function RestoreChest() {
   console.log('+++ Starting Play.RestoreChest()');
-  console.log(`Configuration.restoreChes: ${Configuration.restoreChest}`);
+  console.log(`Configuration.restoreChes: ${Configuration.restoreChest} `);
   if (!Configuration.restoreChest) { return; }
   console.log('--- Ending Play.RestoreChest()');
 

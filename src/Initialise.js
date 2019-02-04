@@ -16,7 +16,7 @@ export function Initialise() {
   Configuration.player1 = InitialisePlayer1();
 
   // Define and locate on gameboard player 2
-  Configuration.player2 = InitialisePlayer2();
+  // Configuration.player2 = InitialisePlayer2();
 
   // Define and locate on gameboard weapon chests
   InitialiseChests();
@@ -28,6 +28,8 @@ export function Initialise() {
 
   Utilities.UpdateGameTable();
   // console.table(Configuration.gameboard);
+
+  console.table(Configuration.gameboard);
 
 }
 
@@ -64,7 +66,7 @@ function InitialisePlayer2() {
 
   // Check if player1 and player2 have collided. If so generate new player2 coords
   while (Utilities.TokenCollision(Configuration.player1.toTile, player2.toTile)) {
-  // while (Utilities.TokenCollision(x1, y1, x2, y2)) {
+    // while (Utilities.TokenCollision(x1, y1, x2, y2)) {
     // Player 1 and 2 have collided - set new player 2 coordinates
     // player2.currentTile = Utilities.SetCoords();
     player2.toTile = Utilities.SetCoords();

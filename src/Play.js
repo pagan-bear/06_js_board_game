@@ -10,12 +10,12 @@ export default function Play(event) {
   let validKey = Configuration.arrowKeys.find(key => key.id == event.keyCode);
   if (!validKey) return;
 
-  // Assign the movement differentials
+  // Assign the movement
   let dx = validKey.dx, dy = validKey.dy;
 
   // Assign player and opponent variables
   let player = Configuration.player1.active ? Configuration.player1 : Configuration.player2;
-  let opponent = (player === Configuration.player1) ? Configuration.player2 : Configuration.player1;
+  // let opponent = (player === Configuration.player1) ? Configuration.player2 : Configuration.player1;
 
   // Check to see if there is a chest to restore and if so, restore it
 
@@ -43,22 +43,24 @@ export default function Play(event) {
     }
     case 'chest': {
       console.log('*** Starting switch (chest)');
-      RestoreChest();
-      LootChest(player, player.toTile);
-      if (Utilities.CheckForOpponent(player, opponent)) { Battle(player, opponent); }
+      if (Configuration.restoreChest) RestoreChest(); 
+      Configuration.chest = Configuration.gameboard[y2][x2];
+      LootChest(player, Configuration.chest);
+      // if (Utilities.CheckForOpponent(player, opponent)) { Battle(player, opponent); }
 
       // player.steps++;
       break;
     }
     case 'player': {
       console.log('*** Starting switch (player)');
-      RestoreChest();
-      Battle(player, opponent);
+      // RestoreChest();
+      // Battle(player, opponent);
       break;
     }
     default: {
       console.log('*** Starting Play.switch (default)');
-      RestoreChest();
+      if (Configuration.restoreChest) RestoreChest();
+      // RestoreChest();
       // Move player from fromTile to toTile
       player.clearToken();
       player.fillToken();
@@ -72,29 +74,20 @@ export default function Play(event) {
 
       // Increment player steps
       player.steps++;
-
-      // Check to see if we have to restore a chest
-      console.log('*** Ending Play.switch (default)');
     }
       // Check if player and opponent adjacent and commence battle if so
-      if (Utilities.CheckForOpponent(player, opponent)) { 
-        Battle(player, opponent); 
-        [player, opponent] = [opponent, player];
-      }
+      // if (Utilities.CheckForOpponent(player, opponent)) { 
+      //   Battle(player, opponent); 
+      //   [player, opponent] = [opponent, player];
+      // }
   }
 
   console.log('--- Ending Play.switch(toTileObject)');
 
   // if (player.steps >= 3) { Utilities.EndTurn(); }
-
   Utilities.UpdateGameTable();
-  console.log('player');
-  console.log(player);
-  console.log('opponent');
-  console.log(opponent);
-
   // console.table(Configuration.gameboard);
-  // console.log('--- Ending Play.Play()');
+
 }
 
 export function Battle(player, opponent) {
@@ -146,20 +139,15 @@ export function Battle(player, opponent) {
   console.log('--- Ending Battle(player, opponent)');
 }
 
-export function LootChest(player, toTile) {
+export function LootChest(player, chest) {
   console.log('+++ Starting LootChest.LootChest(player)');
 
-  // Save weapon and chest details to Configuration.chest
-  let [x, y] = [...toTile];
-
-  console.log([`toTile, x, y: ${toTile}, ${x}, ${y}`]);
-
   // Swap player and chest weapons
-  [Configuration.gameboard[y][x].weapon, player.weapon] =
-    [player.weapon, Configuration.gameboard[y][x].weapon];
+  [chest.weapon, player.weapon] = [player.weapon, chest.weapon];
 
-  // Save the chest object to Configuration variable
-  Configuration.chest = Configuration.gameboard[y][x];
+  // Player has moved to set fromTile to null
+  let [x1, y1] = [...player.fromTile];
+  Configuration.gameboard[y1][x1] = null;
 
   // Set flag to restore chest to it's original location when player moves
   Configuration.restoreChest = true;
@@ -167,8 +155,9 @@ export function LootChest(player, toTile) {
   // Move player to chest tile
   player.clearToken();
   player.fillToken();
-  player.currentTile = [x, y];
-  Configuration.gameboard[y][x] = null;
+
+  // Set fromTile to new tile (toTile)
+  player.fromTile = player.toTile;
 
   // Move player to chest position
   console.log('--- Ending LootChest.LootChest(player)');
@@ -176,8 +165,8 @@ export function LootChest(player, toTile) {
 
 export function RestoreChest() {
   console.log('+++ Starting Play.RestoreChest()');
-  console.log(`Configuration.restoreChes: ${Configuration.restoreChest}`);
-  if (!Configuration.restoreChest) { return; }
+  // Get the chest coords
+  let [x, y] = [Configuration.chest.toTile];
+  Configuration.chest.fillToken();
   console.log('--- Ending Play.RestoreChest()');
-
 }

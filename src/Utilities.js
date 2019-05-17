@@ -7,7 +7,8 @@ import Configuration from './Configuration';
 export function CheckForOpponent(player, opponent) {
   console.log('+++ Starting Utilities.CheckForOpponent(player, opponent)');
   let [x1, y1] = player.toTile;
-  let [x2, y2] = opponent.fromTile;
+  // let [x2, y2] = opponent.fromTile;
+  let [x2, y2] = [9, 9];
 
   // Check of players are adjacent
   if (
@@ -49,11 +50,11 @@ export function UpdateGameTable() {
   $('#player1-maxdamage').text(Configuration.player1.weapon.maxDamage);
   $('#player1-life').text(Configuration.player1.life);
 
-  $('#player2-name').text(Configuration.player2.name);
-  $('#player2-steps').text(Configuration.player2.steps);
-  $('#player2-weapon').text(Configuration.player2.weapon.shortName);
-  $('#player2-maxdamage').text(Configuration.player2.weapon.maxDamage);
-  $('#player2-life').text(Configuration.player2.life);
+  // $('#player2-name').text(Configuration.player2.name);
+  // $('#player2-steps').text(Configuration.player2.steps);
+  // $('#player2-weapon').text(Configuration.player2.weapon.shortName);
+  // $('#player2-maxdamage').text(Configuration.player2.weapon.maxDamage);
+  // $('#player2-life').text(Configuration.player2.life);
 }
 
 export function LootChest(x2, y2) {

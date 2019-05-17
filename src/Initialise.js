@@ -16,7 +16,7 @@ export function Initialise() {
   Configuration.player1 = InitialisePlayer1();
 
   // Define and locate on gameboard player 2
-  Configuration.player2 = InitialisePlayer2();
+  // Configuration.player2 = InitialisePlayer2();
 
   // Define and locate on gameboard weapon chests
   InitialiseChests();

@@ -1,11 +1,12 @@
-/* eslint-disable no-console */
-/* global $ */
+/* jshint esversion: 6 */
+/* jshint expr: true */
+/* elsint no-console: off */
 
 import { Initialise } from './Initialise';
+// import GamePlay from './GamePlay';
 import Play from './Play';
 import * as Utilities from './Utilities';
 
-// Initialise the gameboard and tokens
 Initialise();
 
 // Game movement

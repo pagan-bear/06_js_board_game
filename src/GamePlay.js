@@ -1,4 +1,6 @@
-/* eslint-disable no-console */
+/* jshint esversion: 6 */
+/* jshint expr: true */
+/* elsint no-console: off */
 
 import Configuration from './Configuration';
 

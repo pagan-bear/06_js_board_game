@@ -1,14 +1,16 @@
-/* eslint-disable no-console */
+/* jshint esversion: 6 */
+/* jshint expr: true */
+/* elsint no-console: off */
 
 import Configuration from './Configuration';
 import * as Tokens from './Tokens';
 import * as Utilities from './Utilities';
 
-// Initialise game: canvas, gameboard, player1, player2, chests, walls
+// Initialise game canvas
 export function Initialise() {
+  // console.log('+++ Starting Initialise.Initialise()');
   // Define HTML canvas and contenxt
   InitialiseCanvas();
-
   // Define board to be used throughout game
   Configuration.gameboard = InitialiseGameboard();
 
@@ -18,25 +20,26 @@ export function Initialise() {
   // Define and locate on gameboard player 2
   // Configuration.player2 = InitialisePlayer2();
 
+  Utilities.UpdateGameTable();
+
   // Define and locate on gameboard weapon chests
-  InitialiseChests();
-  // console.table(Configuration.chestArray);
+  Configuration.chestArray = InitialiseChests();
 
   // Define and locate on gameboard walls
   // InitialiseWalls();
-  // console.table(Configuration.wallArray);
 
-  Utilities.UpdateGameTable();
-  // console.table(Configuration.gameboard);
-
+  // console.log('--- Ending Initialise.Initialise()');
 }
 
 function InitialiseCanvas() {
+  // console.log('+++ Starting Initialise.InitialiseCanvas()');
   Configuration.canvas.width = Configuration.gameboardRows * Configuration.dx;
   Configuration.canvas.height = Configuration.gameboardCols * Configuration.dy;
+  // console.log('--- Starting Initialise.InitialiseCanvas()');
 }
 
 function InitialiseGameboard() {
+  // console.log('+++ Starting Initialise.InitialiseGameboard()');
   let gameboard = [];
   for (let column = 0; column < Configuration.gameboardCols; column++) {
     gameboard[column] = [];
@@ -44,64 +47,74 @@ function InitialiseGameboard() {
       gameboard[column][row] = null;
     }
   }
+  // console.log('--- Ending Initialise.InitialiseGameboard()');
   return gameboard;
 }
 
 function InitialisePlayer1() {
+  // console.log('+++ Starting Initialise.InitialisePlayer1()');
   let player1 = new Tokens.Player(1, 'Sally');
-  let [x, y] = [...player1.fromTile];
-  // Draw player1 token on canvas and set active
-  player1.fillToken();
-  player1.active = true;
-  // Place player1 token on gameboard
-  Configuration.gameboard[y][x] = player1;
 
+  PlaceTokenOnGameboard(player1, true);
+  // console.log('--- Ending Initialise.InitialisePlayer1()');
   return player1;
 }
 
 function InitialisePlayer2() {
+  // console.log('+++ Starting Initialise.InitialisePlayer2()');
   let player2 = new Tokens.Player(2, 'Jerry');
+  let [x1, y1] = Configuration.player1.currentTile;
+  let [x2, y2] = player2.currentTile;
 
-  // Check if player1 and player2 have collided. If so generate new player2 coords
-  while (Utilities.TokenCollision(Configuration.player1.toTile, player2.toTile)) {
-  // while (Utilities.TokenCollision(x1, y1, x2, y2)) {
-    // Player 1 and 2 have collided - set new player 2 coordinates
-    // player2.currentTile = Utilities.SetCoords();
-    player2.toTile = Utilities.SetCoords();
+  // player1 and player2 have collided so generate new player2 coords
+  while (Utilities.TokenCollision(x1, y1, x2, y2)) {
+    player2.currentTile = Utilities.SetCoords();
+    [x2, y2] = player2.currentTile;
+    player2.toTile = player2.currentTile;
+    player2.clearToken();
+    player2.fillToken();
   }
-  let [x2, y2] = [...player2.toTile];
 
-  // Draw player2 token on canvas and set inactive
-  player2.fillToken();
-  player2.active = false;
-  // Place player2 token on gameboard
-  Configuration.gameboard[y2][x2] = player2;
+  PlaceTokenOnGameboard(player2, false);
 
+  // console.log('--- Ending Initialise.InitialisePlayer2()');
   return player2;
 }
 
+function PlaceTokenOnGameboard(token, active) {
+  // console.log('+++ Starting Initialise.PlaceTokenOnGameboard()');
+  let [px, py] = token.currentTile;
+  Configuration.gameboard[py][px] = token;
+  token.active = active;
+  token.fillToken();
+
+  // console.log('--- Ending Initialise.PlaceTokenOnGameboard()');
+}
+
 function InitialiseChests() {
+  // console.log('Starting Initialise.IntialiseChests()');
+  let chestArray = [];
   let numChests = Utilities.RandomNumber(Configuration.minChests, Configuration.maxChests);
 
   for (let i = 0; i < numChests; i++) {
     let chest = new Tokens.Chest(4, 'chest');
-    let [cx, cy] = chest.toTile;
+    let [cx, cy] = chest.currentTile;
     // Something in the chosen location?
     while (Configuration.gameboard[cy][cx] != null) {
       [cx, cy] = [
         Utilities.RandomNumber(Configuration.minX, Configuration.maxX),
         Utilities.RandomNumber(Configuration.minY, Configuration.maxY)];
-      chest.toTile = [cx, cy];
+      chest.currentTile = [cx, cy];
     }
-    // Draw chest token on canvas
     chest.fillToken();
-    // Place chest token on gameboard and push to chestArray
     Configuration.gameboard[cy][cx] = chest;
-    Configuration.chestArray.push(chest);
+    chestArray.push(chest);
   }
+  return chestArray;
 }
 
 // function InitialiseWalls() {
+//   // console.log('Starting Initialise.InitialiseWalls()');
 //   let numWalls = Utilities.RandomNumber(Configuration.minWalls, Configuration.maxWalls);
 
 //   for (let i = 0; i < numWalls; i++) {
@@ -114,10 +127,8 @@ function InitialiseChests() {
 //         Utilities.RandomNumber(Configuration.minY, Configuration.maxY)];
 //       wall.toTile = [wx, wy];
 //     }
-//     // Draw wall token on canvas
 //     wall.fillToken();
-//     // Place wall token on gameboard and push to wallArray
 //     Configuration.gameboard[wy][wx] = wall;
-//     Configuration.wallArray.push(wall);
+//     // wallArray.push(wall);
 //   }
 // }

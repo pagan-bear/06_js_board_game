@@ -1,4 +1,6 @@
-/* eslint-disable no-console */
+/* jshint esversion: 6 */
+/* jshint expr: true */
+/* elsint no-console: off */
 
 import Configuration from './Configuration';
 import * as Utilities from './Utilities';
@@ -11,8 +13,8 @@ export default class Token {
     this.id = id;
     this.type = type;
     this.color = this.assignColor();
-    this.fromTile = Utilities.SetCoords();
-    this.toTile = this.fromTile;
+    this.currentTile = this.initialCoordinates();
+    this.toTile = this.currentTile;
     this.width = Configuration.dx;
     this.height = Configuration.dy;
     this.active = false;
@@ -30,8 +32,17 @@ export default class Token {
     }
   }
 
+  initialCoordinates() {
+    // console.log('Starting Tokens.Token.initialCoordinates()');
+    let x = Utilities.RandomNumber(Configuration.minX, Configuration.maxX);
+    let y = Utilities.RandomNumber(Configuration.minY, Configuration.maxY);
+
+    return [x, y];
+  }
+
   clearToken() {
-    let [x, y] = this.fromTile;
+    // console.log('+++ Starting Tokens.Token.clearToken()');
+    let [x, y] = this.currentTile;
 
     Configuration.context.clearRect(
       x * this.width,
@@ -39,9 +50,11 @@ export default class Token {
       this.width,
       this.height
     );
+    // console.log('--- Ending Tokens.Token.clearToken()');
   }
 
   fillToken() {
+    // console.log(`+++ Starting Tokens.Token.fillToken(${this.type})`);
     let [x, y] = this.toTile;
 
     Configuration.context.fillStyle = this.color;
@@ -51,6 +64,7 @@ export default class Token {
       this.width,
       this.height
     );
+    // console.log(`--- Ending Tokens.Token.fillToken(${this.type})`);
   }
 }
 
@@ -64,6 +78,13 @@ export class Player extends Token {
     this.life = 100;
     this.steps = 0;
   }
+
+  moveToken() {
+    // console.log('+++ Starting Tokens.Player.moveToken()');
+    this.clearToken();
+    this.fillToken();
+    // console.log('--- Ending Tokens.Player.moveToken()');
+  }
 }
 
 // Chest token
@@ -73,8 +94,23 @@ export class Chest extends Token {
     this.type = 'chest';
     this.weapon = Configuration.weapons[this.pickRandomWeapon(Configuration.weapons)];
   }
-  // Local method - only used during initialisation
+
+  fillChestToken() {
+    console.log('+++ Starting Chest.fillChestToken()');
+    let [x, y] = this.currentTile;
+
+    Configuration.context.fillStyle = this.color;
+    Configuration.context.fillRect(
+      x * this.width,
+      y * this.height,
+      this.width,
+      this.height
+    );
+    console.log('--- Ending Chest.fillChestToken()');
+  }
+  // Select random weapon from (Configuration) weapons list
   pickRandomWeapon(weapons) {
+    // console.log('Starting Utilities.PickRandomChest');
     let chest;
     let count = 0;
     for (let weapon in weapons)

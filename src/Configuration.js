@@ -1,4 +1,6 @@
-/* eslint-disable no-console */
+/* jshint esversion: 6 */
+/* jshint expr: true */
+/* elsint no-console: off */
 
 export default {
   canvasWidth: 400,
@@ -32,8 +34,13 @@ export default {
 
   minWalls: 8,
   maxWalls: 8,
+<<<<<<< HEAD
   minChests: 20,
   maxChests: 20,
+=======
+  minChests: 4,
+  maxChests: 4,
+>>>>>>> 1488d22360dda87050a16af0815c8e547cb76f1d
 
   arrowKeys: [
     { id: 37, name: 'ArrowLeft', dx: -1, dy: 0 },
@@ -79,5 +86,4 @@ export default {
   restoreChest: false,
   chest: null,
   chestArray: [],
-  wallArray: [],
 };

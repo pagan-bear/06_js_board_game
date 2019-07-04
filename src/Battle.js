@@ -1,20 +1,25 @@
-/* eslint-disable no-console */
+/* jshint esversion: 6 */
+/* jshint expr: true */
+/* eslint no-console: off */
+/* eslint no-unused-vars: off */
 
 import * as Utilities from './Utilities';
 
-export function PlayerBattle(player, opponent) {
-  console.log('+++ Starting Battle.PlayerBattle(player, opponent)');
+export default function PlayerBattle(player, opponent) {
+  // console.log('+++ Starting Battle.PlayerBattle(player, opponent)');
+  // console.log(player);
+  // console.log(opponent);
 
   let attackMode = prompt(`The battle lines are drawn. (A)ttack or (D)efend ${player.name}?`).toLowerCase();
   console.log(`Battle.PlayerBattle() - Setting attack mode: ${attackMode}`);
 
   switch (attackMode) {
     case 'a': {
-      PlayerAttack(player, opponent);
+      PlayerAttacks(player, opponent);
       break;
     }
     case 'd': {
-      PlayerDefend(player, opponent);
+      PlayerDefends(player, opponent);
       break;
     }
     default: {
@@ -23,7 +28,7 @@ export function PlayerBattle(player, opponent) {
     }
   }
 
-  function PlayerAttack(player, opponent) {
+  function PlayerAttacks(player, opponent) {
     console.log('+++ Starting Battle.PlayerBattle.PlayerAttacks()');
     let damage = Utilities.RandomNumber(player.weapon.maxDamage / 2, player.weapon.maxDamage);
     console.log(`${player.name} attacks ${opponent.name} for ${damage} damage`);
@@ -36,11 +41,10 @@ export function PlayerBattle(player, opponent) {
     console.log('--- Ending Battle.PlayerBattle.PlayerAttacks()');
   }
 
-  function PlayerDefend(player, opponent) {
+  function PlayerDefends(player, opponent) {
     console.log('+++ Starting Battle.PlayerBattle.PlayerDefends()');
-    console.log(player);
-    console.log(opponent);
     console.log('--- Ending Battle.PlayerBattle.PlayerDefends()');
   }
-  console.log('--- Ending Battle.PlayerBattle(player, opponent)');
+
+  // console.log('--- Ending Battle.PlayerBattle(player, opponent)');
 }
